@@ -1,0 +1,20 @@
+--- Makefile~	2012-07-07 12:52:15.000000000 +0300
++++ Makefile	2012-07-07 12:51:14.000000000 +0300
+@@ -7,7 +7,7 @@ CXX = g++
+ 
+ 
+ # Optimization flags
+-CXXFLAGS = -O2
++CXXFLAGS ?= -O2
+ 
+ #CXXFLAGS += -g -Wall
+ #CXXFLAGS += -ansi
+@@ -43,7 +43,7 @@ CXXFLAGS += -pthread
+ 
+ 
+ # Linker flags
+-LDFLAGS =
++LDFLAGS +=
+ 
+ 
+ # External libraries
