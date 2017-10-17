@@ -4136,7 +4136,7 @@ int main(int iargc, char* iargv[])
              *fprintf(stderr, "Start to process file: %s\n", InFilename);
              */
             int isMRC = isMRCFile(currFileBaseName);
-            if(!isMRC)
+            if(!isMRC && compress == 1)
             {
                 fprintf(stderr, "pbz2: *ERROR: File [%s] is  not type of  mrc or mrcs!  Skipping...\n", InFilename);
 				fprintf(stderr, "-------------------------------------------\n");
