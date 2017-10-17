@@ -3345,6 +3345,22 @@ std::string getFileNameFromPath(std::string const & path)
 {
     return path.substr(path.find_last_of("/\\") + 1);
 }
+
+int isMRCFile(std::string& fileBaseName)
+{
+    size_t pos = fileBaseName.find_last_of('.');
+    int isMRC = 0;
+    if(pos != std::string::npos)
+    {
+        std::string suffix = fileBaseName.substr(pos + 1);
+        if(suffix == "mrc" || suffix == "mrcs")
+        {
+            isMRC = 1;
+        }
+    }
+
+    return isMRC;
+}
 /*
  *********************************************************
  */
@@ -3944,6 +3960,13 @@ int main(int iargc, char* iargv[])
 		return 1;
 	}
 
+    //Add by huabin
+    for(int i = 0; i < FileListCount; i ++)
+    {
+        fprintf(stderr, "%d:%s\n", i, FileList[i]);
+    }
+
+
 	// process all files
 	for (fileLoop=0; fileLoop < FileListCount; fileLoop++)
 	{
@@ -3992,7 +4015,6 @@ int main(int iargc, char* iargv[])
         outFilename = outputDirStr + currFileBaseName;
 		//outFilename = std::string(outputDirStr + FileList[fileLoop]);
         
-        fprintf(stderr, "outFilename = %s\n", outFilename.c_str());
 		if ((decompress == 1) && hasInFile)
 		{
 			// check if input file is a valid .bz2 compressed file
@@ -4106,6 +4128,23 @@ int main(int iargc, char* iargv[])
 				errLevel = 1;
 				continue;
 			}
+
+            /* 
+             *Here we only process the file with suffix: mrc or mrcs 
+             */
+            /*
+             *fprintf(stderr, "Start to process file: %s\n", InFilename);
+             */
+            int isMRC = isMRCFile(currFileBaseName);
+            if(!isMRC)
+            {
+                fprintf(stderr, "pbz2: *ERROR: File [%s] is  not type of  mrc or mrcs!  Skipping...\n", InFilename);
+				fprintf(stderr, "-------------------------------------------\n");
+				errLevel = 1;
+				continue;
+            }
+
+
 
 			// get some information about the file
 			fstat(hInfile, &statbuf);
